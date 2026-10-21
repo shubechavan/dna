@@ -55,24 +55,24 @@ title slide, and the **Pace** box tells you if you're ahead of or behind plan.
 | # | Slide | Speaker | Time |
 | --- | --- | --- | --- |
 | 1 | Who owns your DNA? | A | 0:20 |
-| 2 | Your genome sold for about $20 (23andMe) | A | 0:40 |
+| 2 | Your DNA, sold for about $20 (23andMe story) | A | 0:40 |
 | 3 | A password you can never change | A | 0:35 |
 | 4 | Everyone profits, except you | A | 0:40 |
-| 5 | Research question & objectives | A | 0:25 |
-| 6 | Proposed model: data off-chain, permissions on-chain | A | 0:50 |
-| 7 | Smart contract **live demo** | B | 0:45 |
-| 8 | Blockchain is not privacy (privacy layers) | B | 0:35 |
-| 9 | Who has tried this? (Genomes.io, Nebula, LunaDNA…) | B | 0:35 |
-| 10 | Where it breaks (critical analysis) | B | 0:45 |
+| 5 | Our research question | A | 0:25 |
+| 6 | Our idea: your DNA stays locked, your rules go on the blockchain | A | 0:50 |
+| 7 | Your rules, as code (**live demo**) | B | 0:45 |
+| 8 | Blockchain doesn't hide data (privacy protections) | B | 0:35 |
+| 9 | Who has tried this? (real companies) | B | 0:35 |
+| 10 | Where it breaks (the problems) | B | 0:45 |
 | 11 | India & future scope | B | 0:30 |
-| 12 | The verdict + Q&A | B | 0:20 |
+| 12 | The verdict + questions | B | 0:20 |
 | 13 | Sources (backup) | – | – |
 
 Presenter A: 3:30 · Presenter B: 3:30. A word-for-word script for each slide is in `src/slides.ts` (`notes`).
 
 ## Live demo tip (slide 7)
-Click **Approve**: three events appear in the on-chain log and the wallet counts up to 40 GENE.
-Then click **Revoke access** to show the key limitation: future access is blocked, but shared results can't be recalled.
+Click **Approve**: three entries appear in the blockchain record and the wallet counts up to 40 tokens.
+Then click **Take back permission** to show the key limitation: no new access, but the lab keeps answers it already got.
 Press `D` (or **Auto**) to play the whole sequence hands-free. It's an in-browser simulation; no real blockchain is involved.
 
 ## Project structure

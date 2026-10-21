@@ -72,10 +72,10 @@ export function TitleMain({ slide }: P) {
 
 /* ── Hook: the 23andMe story ───────────────────────────── */
 const HOOK_EVENTS = [
-  { when: 'Oct 2023', what: 'Hackers reuse leaked passwords on ~14,000 accounts. Through “DNA Relatives”, 6.9M people are exposed.', c: '#ff4f6d' },
-  { when: 'Mar 2025', what: '23andMe files for bankruptcy. Its genetic database becomes an asset for sale.', c: '#ffb547' },
+  { when: 'Oct 2023', what: 'Hackers break into ~14,000 accounts using reused passwords. A “find your relatives” feature lets them reach 6.9M people’s data.', c: '#ff4f6d' },
+  { when: 'Mar 2025', what: '23andMe goes bankrupt. Its DNA database becomes something to sell.', c: '#ffb547' },
   { when: 'Jun 2025', what: '1.9M customers (~15%) rush to delete their data.', c: '#8d7bff' },
-  { when: 'Jul 2025', what: 'Sold to TTAM Research Institute for $305M, after Regeneron’s $256M bid.', c: '#45c8ff' },
+  { when: 'Jul 2025', what: 'The database is sold for $305M to a nonprofit set up by the company’s co-founder.', c: '#45c8ff' },
 ];
 
 export function HookMain({ slide }: P) {
@@ -96,17 +96,17 @@ export function HookMain({ slide }: P) {
           </div>
         ))}
       </Card>
-      <Item className="footnote">$305M ÷ ~15M customers ≈ $20 each (our estimate). Sources: NPR, TechCrunch, HIPAA Journal, Business Insider.</Item>
+      <Item className="footnote">$305M ÷ ~15M customers ≈ $20 each (our own estimate). Sources: NPR, TechCrunch, HIPAA Journal, Business Insider.</Item>
     </>
   );
 }
 
 /* ── Why DNA data is different ─────────────────────────── */
 const WHY = [
-  { icon: InfinityIcon, t: 'Permanent', d: 'Leaked once, leaked forever. You can’t reset a genome.', c: '#45c8ff' },
-  { icon: Users, t: 'Shared', d: '~50% identical to each parent, sibling and child. Your test exposes them too.', c: '#8d7bff' },
-  { icon: Fingerprint, t: 'Identifying', d: '~60% of US European-ancestry people are traceable via a relative’s DNA (Science, 2018).', c: '#ff4f6d' },
-  { icon: Activity, t: 'Predictive', d: 'Reveals disease risk, ancestry and traits, which is valuable to insurers & pharma.', c: '#ffb547' },
+  { icon: InfinityIcon, t: 'Permanent', d: 'If it leaks, it’s leaked forever. You can’t change DNA like a password.', c: '#45c8ff' },
+  { icon: Users, t: 'Shared', d: 'You share half your DNA with each parent, sibling and child. Your test reveals them too.', c: '#8d7bff' },
+  { icon: Fingerprint, t: 'Identifying', d: 'A 2018 study: 60% of Americans of European descent could be identified through a relative’s DNA.', c: '#ff4f6d' },
+  { icon: Activity, t: 'Predictive', d: 'It shows your disease risks, which insurance and medicine companies want to know.', c: '#ffb547' },
 ];
 
 const STRAND = 'ATGCGTACGTTAGCCATGCAATCGGATCCGTAGCTAGGCTTACGATCGATGCATGCCGTAAGCT';
@@ -121,7 +121,7 @@ export function WhyMain({ slide }: P) {
           <span className="gm-unit">billion</span>
         </div>
         <div className="gm-side">
-          <div className="gm-label">DNA letters in one human genome</div>
+          <div className="gm-label">letters in one person’s DNA</div>
           <div className="gm-strand" aria-hidden>
             <span>{STRAND + STRAND}</span>
           </div>
@@ -145,9 +145,9 @@ export function WhyMain({ slide }: P) {
 /* ── Who profits ───────────────────────────────────────── */
 export function ProfitsMain({ slide }: P) {
   const nodes = [
-    { icon: User, t: 'You', d: 'pay ~$100–200 for a kit', c: '#2ff3c4' },
-    { icon: FlaskConical, t: 'Testing company', d: 'builds & controls the database', c: '#45c8ff' },
-    { icon: Pill, t: 'Pharma', d: 'GSK invested $300M in 23andMe (2018)', c: '#ffb547' },
+    { icon: User, t: 'You', d: 'pay ~$100–200 for a DNA test', c: '#2ff3c4' },
+    { icon: FlaskConical, t: 'Testing company', d: 'keeps your data in a big database', c: '#45c8ff' },
+    { icon: Pill, t: 'Medicine companies', d: 'GSK put $300M into 23andMe (2018) to use its data', c: '#ffb547' },
   ];
   return (
     <>
@@ -162,7 +162,7 @@ export function ProfitsMain({ slide }: P) {
             </div>
             {i < nodes.length - 1 && (
               <div className="flow-arrow">
-                <span>{i === 0 ? 'DNA + fee' : 'data access $$$'}</span>
+                <span>{i === 0 ? 'DNA + money' : 'pay to use it'}</span>
                 <ArrowRight />
               </div>
             )}
@@ -179,8 +179,8 @@ export function ProfitsMain({ slide }: P) {
           <div>
             <div className="feature-title">Henrietta Lacks</div>
             <div className="feature-text">
-              Her cells were taken without consent. The HeLa line powered decades of research, from the polio vaccine to cancer studies. Her family settled
-              with Thermo Fisher only in <b>2023</b>.
+              Her cells were taken without asking her and used in research for 70+ years, even for the polio vaccine. Her family got a settlement only in{' '}
+              <b>2023</b>.
             </div>
           </div>
         </Card>
@@ -188,7 +188,7 @@ export function ProfitsMain({ slide }: P) {
       <Item className="checkbox-line">
         <span className="fake-check">✓</span>
         <span>
-          Consent today = <b>one checkbox</b>, ticked once, valid forever.
+          Consent today = <b>tick one box</b>, once, forever.
         </span>
       </Item>
     </>
@@ -197,10 +197,10 @@ export function ProfitsMain({ slide }: P) {
 
 /* ── Research question ─────────────────────────────────── */
 const OBJECTIVES = [
-  { n: '01', t: 'Control', d: 'How blockchain can give individuals control over access to their genomic data.', c: '#2ff3c4' },
-  { n: '02', t: 'Consent & payment', d: 'How smart contracts could manage consent and compensation.', c: '#8d7bff' },
-  { n: '03', t: 'Risks', d: 'Privacy, security, ethical and legal challenges.', c: '#ffb547' },
-  { n: '04', t: 'Feasibility', d: 'Is a decentralised DNA data marketplace technically & economically viable?', c: '#ff4f6d' },
+  { n: '01', t: 'Control', d: 'Can blockchain let people decide who uses their DNA data?', c: '#2ff3c4' },
+  { n: '02', t: 'Permission & payment', d: 'Can smart contracts handle permission and payment automatically?', c: '#8d7bff' },
+  { n: '03', t: 'Risks', d: 'What are the privacy, security, legal and ethical problems?', c: '#ffb547' },
+  { n: '04', t: 'Will it work?', d: 'Could a market for DNA data really work, in practice and in money terms?', c: '#ff4f6d' },
 ];
 
 export function QuestionMain({ slide }: P) {
@@ -218,18 +218,18 @@ export function QuestionMain({ slide }: P) {
           </Card>
         ))}
       </div>
-      <Item className="footnote">Method: secondary research → proposed architecture → critical evaluation. A model, not a finished product.</Item>
+      <Item className="footnote">How we did it: read research & real cases → designed a model → checked where it fails. It’s an idea, not a finished product.</Item>
     </>
   );
 }
 
 /* ── Proposed model ────────────────────────────────────── */
 const STEPS = [
-  { icon: Dna, t: 'Provide a DNA sample', d: 'A lab sequences the genome (~$100–200 for a whole genome today).', where: 'off-chain', c: '#2ff3c4' },
-  { icon: Lock, t: 'Encrypt & vault it', d: 'Stored encrypted in a personal vault. Only its hash goes on-chain.', where: 'off-chain', c: '#45c8ff' },
-  { icon: FileCode2, t: 'Smart contract records consent', d: 'Who · purpose · duration · price, stored as enforceable rules.', where: 'on-chain', c: '#8d7bff' },
-  { icon: Microscope, t: 'Researcher requests access', d: 'The owner reviews the terms and approves from a wallet.', where: 'on-chain', c: '#dfe9ff' },
-  { icon: Coins, t: 'Automatic compensation', d: 'Escrow pays the owner if the agreement includes payment.', where: 'on-chain', c: '#ffb547' },
+  { icon: Dna, t: 'Give a DNA sample', d: 'A lab reads your full DNA (about $100–200 today).', onChain: false, c: '#2ff3c4' },
+  { icon: Lock, t: 'Lock it in your own vault', d: 'The file is encrypted (scrambled). The blockchain keeps only its fingerprint.', onChain: false, c: '#45c8ff' },
+  { icon: FileCode2, t: 'Set your rules', d: 'A smart contract records who can use it, why, for how long and for what price.', onChain: true, c: '#8d7bff' },
+  { icon: Microscope, t: 'A researcher asks', d: 'You see the request and approve or reject it on your phone.', onChain: true, c: '#dfe9ff' },
+  { icon: Coins, t: 'Get paid automatically', d: 'If you agreed to a payment, the contract pays you straight away.', onChain: true, c: '#ffb547' },
 ];
 
 export function ModelMain({ slide }: P) {
@@ -237,7 +237,7 @@ export function ModelMain({ slide }: P) {
     <>
       <Head slide={slide} />
       <Card className="steps" accent="#8d7bff">
-        {STEPS.map(({ icon: Icon, t, d, where, c }, i) => (
+        {STEPS.map(({ icon: Icon, t, d, onChain, c }, i) => (
           <div className="step" key={t} style={css({ '--c': c })}>
             <div className="step-icon">
               <Icon />
@@ -247,12 +247,12 @@ export function ModelMain({ slide }: P) {
               <div className="step-title">{t}</div>
               <div className="step-text">{d}</div>
             </div>
-            <span className={`where where-${where}`}>{where}</span>
+            <span className={`where ${onChain ? 'where-on-chain' : 'where-off-chain'}`}>{onChain ? 'blockchain' : 'private vault'}</span>
           </div>
         ))}
       </Card>
       <Item className="footnote">
-        <Em text="Blockchain records *permissions and an audit trail*. It doesn’t make data private by itself." />
+        <Em text="The blockchain keeps *a record of who used what*. It doesn’t hide the data by itself." />
       </Item>
     </>
   );

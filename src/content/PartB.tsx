@@ -30,26 +30,26 @@ const css = (v: Record<string, string>) => v as CSSProperties;
 
 /* ── Smart contract ────────────────────────────────────── */
 const CODE = `contract DNAConsent {
-  struct Grant {
-    address lab;   bytes32 purpose;
-    uint64 expiry; uint256 fee;  bool active;
+  struct Permission {
+    address lab;     string purpose;
+    uint64 endsOn;   uint256 price;   bool active;
   }
-  mapping(bytes32 => Grant) public grants; // hashes only, never DNA
+  mapping(bytes32 => Permission) public permissions; // fingerprint only, never DNA
 
   function approve(bytes32 id) external onlyOwner {
-    Grant storage g = grants[id];
-    g.active = true;
-    escrow.release(owner, g.fee);          // owner gets paid
-    emit ConsentGranted(id, g.lab, g.purpose);
+    Permission storage p = permissions[id];
+    p.active = true;
+    payOwner(p.price);                     // you get paid
+    emit PermissionGiven(id, p.lab, p.purpose);
   }
 
-  function revoke(bytes32 id) external onlyOwner {
-    grants[id].active = false;             // future access blocked
-    emit ConsentRevoked(id);
+  function takeBack(bytes32 id) external onlyOwner {
+    permissions[id].active = false;        // no new access
+    emit PermissionRemoved(id);
   }
 }`;
 
-const TOKEN = /(\/\/.*$)|\b(contract|struct|mapping|function|external|public|storage|emit|onlyOwner|true|false)\b|\b(address|bytes32|uint64|uint256|bool)\b|\b(approve|revoke|release|ConsentGranted|ConsentRevoked)\b(?=\()/gm;
+const TOKEN = /(\/\/.*$)|\b(contract|struct|mapping|function|external|public|storage|emit|onlyOwner|true|false)\b|\b(address|bytes32|uint64|uint256|bool|string)\b|\b(approve|takeBack|payOwner|PermissionGiven|PermissionRemoved)\b(?=\()/gm;
 
 function highlight(src: string): ReactNode[] {
   const out: ReactNode[] = [];
@@ -82,7 +82,7 @@ export function ContractMain({ slide }: P) {
             <i />
           </span>
           DNAConsent.sol
-          <span className="code-note">simplified for illustration</span>
+          <span className="code-note">simplified example</span>
         </div>
         <pre className="code">
           <code>{highlight(CODE)}</code>
@@ -94,11 +94,11 @@ export function ContractMain({ slide }: P) {
 
 /* ── Privacy layers ────────────────────────────────────── */
 const LAYERS = [
-  { icon: Lock, t: 'Encryption at rest & in transit', d: 'Protects storage, but not data while it’s being used.', m: 5, lab: 'Mature', c: '#2ff3c4' },
-  { icon: Cpu, t: 'Confidential computing (TEE)', d: 'Decrypts only inside sealed hardware, e.g. Genomes.io × AMD.', m: 4, lab: 'In production', c: '#45c8ff' },
-  { icon: Send, t: 'Compute-to-data', d: 'The algorithm travels to the data; only results leave (Ocean Protocol).', m: 3, lab: 'Emerging', c: '#8d7bff' },
-  { icon: EyeOff, t: 'Zero-knowledge proofs', d: 'Prove “I carry variant X” without revealing the genome.', m: 2, lab: 'Early', c: '#ffb547' },
-  { icon: Binary, t: 'Homomorphic encryption', d: 'Compute directly on encrypted data. Still very slow.', m: 1, lab: 'Research', c: '#ff4f6d' },
+  { icon: Lock, t: 'Lock the file', d: 'Scramble the data so only you hold the key (encryption).', m: 5, lab: 'Used everywhere', c: '#2ff3c4' },
+  { icon: Cpu, t: 'Open it only inside a sealed chip', d: 'Data is unlocked only inside secure hardware. Genomes.io does this with AMD.', m: 4, lab: 'In use today', c: '#45c8ff' },
+  { icon: Send, t: 'Send the question, not the data', d: 'The researcher’s code runs where your data lives; only the answer comes back.', m: 3, lab: 'Growing', c: '#8d7bff' },
+  { icon: EyeOff, t: 'Prove without showing', d: 'Prove “I have gene X” without revealing your DNA (zero-knowledge proof).', m: 2, lab: 'Early stage', c: '#ffb547' },
+  { icon: Binary, t: 'Calculate on locked data', d: 'Do maths on data while it’s still scrambled. Very slow for now.', m: 1, lab: 'Still in labs', c: '#ff4f6d' },
 ];
 
 export function PrivacyMain({ slide }: P) {
@@ -107,8 +107,8 @@ export function PrivacyMain({ slide }: P) {
       <Head slide={slide} />
       <Card className="layers" accent="#45c8ff">
         <div className="layers-head">
-          <span>Technique</span>
-          <span>Maturity</span>
+          <span>Protection</span>
+          <span>How ready?</span>
         </div>
         {LAYERS.map(({ icon: Icon, t, d, m, lab, c }) => (
           <div className="layer" key={t} style={css({ '--c': c })}>
@@ -134,11 +134,11 @@ export function PrivacyMain({ slide }: P) {
 
 /* ── Real-world landscape ──────────────────────────────── */
 const PROJECTS = [
-  { name: 'Genomes.io', meta: '2018 · UK', status: 'Active', c: '#2ff3c4', d: 'Encrypted DNA vaults, access log on Ethereum, $GENOME token on Base. Users are paid for anonymous research queries.' },
-  { name: 'Nebula Genomics', meta: '2018 · George Church', status: 'Pivoted', c: '#8d7bff', d: 'Launched with a token & Ethereum vision. A 2024 class action alleges data was shared with Meta, Microsoft & Google.' },
-  { name: 'LunaDNA', meta: '2017', status: 'Shut down', c: '#ff4f6d', d: 'Paid contributors in company shares, not coins. Closed Jan 2024 when funding ran out.' },
-  { name: '23andMe', meta: '2006 · centralised', status: 'Sold', c: '#ffb547', d: '2023 breach, 2025 bankruptcy; database sold to TTAM for $305M.' },
-  { name: 'VitaDAO', meta: 'DeSci', status: 'Active', c: '#45c8ff', d: 'Community-funded longevity research using IP-NFTs; raised $4.1M incl. Pfizer Ventures.' },
+  { name: 'Genomes.io', meta: '2018 · UK', status: 'Active', c: '#2ff3c4', d: 'Keeps your DNA in a locked vault, records every access on a blockchain, and pays you in tokens for anonymous research questions.' },
+  { name: 'Nebula Genomics', meta: '2018 · USA', status: 'Sued', c: '#8d7bff', d: 'Started with a blockchain and token plan. In 2024 it was sued for allegedly sharing customer data with Meta, Microsoft & Google.' },
+  { name: 'LunaDNA', meta: '2017 · USA', status: 'Shut down', c: '#ff4f6d', d: 'Paid people with company shares instead of crypto. Ran out of money and closed in Jan 2024.' },
+  { name: '23andMe', meta: '2006 · no blockchain', status: 'Sold', c: '#ffb547', d: 'The big traditional company: hacked in 2023, bankrupt in 2025, DNA data sold for $305M.' },
+  { name: 'VitaDAO', meta: 'online community', status: 'Active', c: '#45c8ff', d: 'People pool money online to fund anti-ageing research. Raised $4.1M, with backing from Pfizer Ventures.' },
 ];
 
 export function LandscapeMain({ slide }: P) {
@@ -158,7 +158,7 @@ export function LandscapeMain({ slide }: P) {
         ))}
       </Card>
       <Item className="takeaway">
-        <Em text="The technology works. *The business model* is the hard part." />
+        <Em text="The technology works. *Making money from it* is the hard part." />
       </Item>
     </>
   );
@@ -166,12 +166,12 @@ export function LandscapeMain({ slide }: P) {
 
 /* ── Challenges ────────────────────────────────────────── */
 const CHALLENGES = [
-  { icon: Users, t: 'Relatives can’t consent', d: 'You share ~50% of your DNA with close family. Your “yes” exposes them.' },
-  { icon: Undo2, t: 'Revoke ≠ delete', d: 'Contracts block future access; copies already shared can’t be recalled.' },
-  { icon: Scale, t: 'Ownership is unclear', d: 'Moore v. Regents (1990): no property right in your own cells. Controlling a file ≠ owning DNA.' },
-  { icon: Database, t: 'Ledgers never forget', d: 'Clashes with GDPR’s right to erasure, so store hashes only, never DNA.' },
-  { icon: TrendingDown, t: 'Small, volatile payouts', d: 'Token prices swing, and payment could pressure poorer communities to sell.' },
-  { icon: ScanSearch, t: 'Re-identification', d: '“Anonymous” DNA can often be traced back through relatives.' },
+  { icon: Users, t: 'Your family can’t say no', d: 'You share half your DNA with close family. When you share yours, you share theirs.' },
+  { icon: Undo2, t: 'Taking back ≠ deleting', d: 'You can stop new access, but a lab that already copied your data keeps it.' },
+  { icon: Scale, t: 'Who owns DNA? Unclear', d: 'In a 1990 US case (Moore v. Regents), a court said a patient didn’t own cells taken from his body.' },
+  { icon: Database, t: 'Blockchains never forget', d: 'Privacy laws let you ask for deletion, but a blockchain can’t delete. So store only a fingerprint, never DNA.' },
+  { icon: TrendingDown, t: 'Small, unstable payments', d: 'Crypto tokens can lose value, and poorer people may feel pushed to sell their data.' },
+  { icon: ScanSearch, t: '“Anonymous” isn’t really', d: 'DNA can often be traced back to you through your relatives.' },
 ];
 
 export function ChallengesMain({ slide }: P) {
@@ -196,12 +196,12 @@ export function ChallengesMain({ slide }: P) {
 
 /* ── India & future scope ──────────────────────────────── */
 const FUTURE = [
-  { icon: EyeOff, t: 'Zero-knowledge genome queries' },
-  { icon: Network, t: 'DeSci DAOs funding research' },
-  { icon: Bot, t: 'AI drug discovery needs consented data' },
-  { icon: FileCheck2, t: 'Standard consent codes (GA4GH DUO)' },
-  { icon: Send, t: 'Federated & compute-to-data studies' },
-  { icon: HandCoins, t: 'Fair benefit-sharing for communities' },
+  { icon: EyeOff, t: 'Ask DNA questions without seeing the DNA' },
+  { icon: Network, t: 'Online communities funding science' },
+  { icon: Bot, t: 'AI medicine research will need permitted data' },
+  { icon: FileCheck2, t: 'One standard “permission label” for DNA data' },
+  { icon: Send, t: 'Studies where data never leaves your vault' },
+  { icon: HandCoins, t: 'A fair share for communities who give DNA' },
 ];
 
 export function FutureMain({ slide }: P) {
@@ -216,10 +216,9 @@ export function FutureMain({ slide }: P) {
           <Card accent="#2ff3c4" className="feature">
             <Landmark className="feature-icon" />
             <div>
-              <div className="feature-title">DPDP Act 2023 + DPDP Rules 2025</div>
+              <div className="feature-title">India’s new data law (DPDP Act)</div>
               <div className="feature-text">
-                Notified Nov 2025: registered <b>Consent Managers</b> let people give, review and withdraw consent from one dashboard, which fits naturally with
-                smart-contract consent.
+                Rules released in Nov 2025 create <b>consent managers</b>: one app where you give or take back permission for your data, just like our idea.
               </div>
             </div>
           </Card>
@@ -228,18 +227,18 @@ export function FutureMain({ slide }: P) {
             <div>
               <div className="feature-title">GenomeIndia</div>
               <div className="feature-text">
-                <b>10,000</b> whole genomes from <b>85</b> population groups (180M variants) opened for research via IBDC in 2025.
+                India mapped the full DNA of <b>10,000</b> people from <b>85</b> communities and opened it to researchers in 2025.
               </div>
             </div>
           </Card>
           <Item className="footnote">
-            <Globe size={14} style={{ verticalAlign: '-2px' }} /> Elsewhere: GDPR treats genetic data as a special category · US Genomic Data Protection Act
-            proposed (2025).
+            <Globe size={14} style={{ verticalAlign: '-2px' }} /> Elsewhere: Europe’s GDPR gives DNA extra protection · the US proposed a DNA privacy law in
+            2025.
           </Item>
         </div>
         <div className="future-col">
           <div className="col-label">
-            <Sparkles size={15} style={{ verticalAlign: '-2px' }} /> Future scope
+            <Sparkles size={15} style={{ verticalAlign: '-2px' }} /> What comes next
           </div>
           <Card accent="#8d7bff" className="future-list">
             {FUTURE.map(({ icon: Icon, t }) => (
@@ -257,9 +256,9 @@ export function FutureMain({ slide }: P) {
 
 /* ── Verdict ───────────────────────────────────────────── */
 const VERDICT = [
-  { q: 'Can you control access?', a: 'Yes', c: '#2ff3c4', d: 'Smart contracts + encrypted vaults make it technically feasible today.' },
-  { q: 'Can you get paid?', a: 'Possibly', c: '#ffb547', d: 'Only if agreements include it; amounts are small and uncertain.' },
-  { q: 'Do you truly own your DNA?', a: 'Not yet', c: '#ff4f6d', d: 'Law, shared family DNA and existing copies limit ownership.' },
+  { q: 'Can you control who uses it?', a: 'Yes', c: '#2ff3c4', d: 'The technology to do this exists today.' },
+  { q: 'Can you get paid?', a: 'Maybe', c: '#ffb547', d: 'Only if the deal includes payment, and amounts are small.' },
+  { q: 'Do you truly own your DNA?', a: 'Not yet', c: '#ff4f6d', d: 'Laws, your relatives and old copies get in the way.' },
 ];
 
 export function VerdictMain({ slide }: P) {
@@ -278,7 +277,7 @@ export function VerdictMain({ slide }: P) {
       </Card>
       <Item>
         <blockquote className="quote">
-          <Decode text="Blockchain can’t make DNA private. It can make every access *visible, consented and accountable.*" duration={1400} delay={900} />
+          <Decode text="Blockchain can’t hide your DNA. But it can make sure *every use is asked for, and recorded.*" duration={1400} delay={900} />
         </blockquote>
       </Item>
       <Item className="thanks">

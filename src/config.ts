@@ -5,8 +5,8 @@
 export const DECK = {
   presenters: {
     // badge is shown in the round avatar (both presenters share the initials "SC")
-    A: { name: 'Shubham Chavan', roll: '17030925005', badge: '1', part: 'Problem & proposed model' },
-    B: { name: 'Shubham Chaubey', roll: '17030925004', badge: '2', part: 'Demo, analysis & verdict' },
+    A: { name: 'Shubham Chavan', roll: '17030925005', badge: '1', part: 'The problem & our idea' },
+    B: { name: 'Shubham Chaubey', roll: '17030925004', badge: '2', part: 'Demo, problems & conclusion' },
   },
   course: 'MCA · Semester III',
   subject: 'Blockchain Research',

@@ -54,10 +54,10 @@ export default function ContractDemo() {
   const approve = useCallback(() => {
     if (phaseRef.current !== 'pending') return;
     setPhase('active');
-    push('ConsentGranted', 'lab=0x91c4… purpose=CARDIO exp=90d', '#2ff3c4');
-    later(1000, () => push('QueryExecuted', 'compute-to-data → aggregate result only', '#45c8ff'));
+    push('Permission given', 'CardioGen · heart study · 90 days', '#2ff3c4');
+    later(1000, () => push('Question answered', 'only a summary left your vault', '#45c8ff'));
     later(2000, () => {
-      push('PaymentReleased', `${FEE} GENE → owner wallet`, '#ffb547');
+      push('Payment sent', `${FEE} tokens → your wallet`, '#ffb547');
       countBalance(FEE);
     });
   }, [push, countBalance]);
@@ -65,13 +65,13 @@ export default function ContractDemo() {
   const decline = useCallback(() => {
     if (phaseRef.current !== 'pending') return;
     setPhase('declined');
-    push('RequestDeclined', 'no data accessed · no payment', '#ff4f6d');
+    push('Request declined', 'nothing shared, nothing paid', '#ff4f6d');
   }, [push]);
 
   const revoke = useCallback(() => {
     if (phaseRef.current !== 'active') return;
     setPhase('revoked');
-    push('ConsentRevoked', 'future queries blocked', '#ff4f6d');
+    push('Permission taken back', 'no new questions allowed', '#ff4f6d');
   }, [push]);
 
   const reset = useCallback(() => {
@@ -99,33 +99,33 @@ export default function ContractDemo() {
     return () => window.removeEventListener('deck:demo', onDemo);
   }, [autoplay]);
 
-  const status = { pending: 'PENDING', active: 'ACTIVE', revoked: 'REVOKED', declined: 'DECLINED' }[phase];
+  const status = { pending: 'WAITING', active: 'ALLOWED', revoked: 'TAKEN BACK', declined: 'DECLINED' }[phase];
 
   return (
     <div className="demo">
       <div className="demo-head">
-        <span className="live-dot" /> LIVE SIMULATION
+        <span className="live-dot" /> LIVE DEMO
         <span className="demo-wallet">
-          <Wallet size={14} /> 0x7a3…9f2 ·{' '}
+          <Wallet size={14} /> Your wallet ·{' '}
           <b className="tabular">
-            {balance} GENE
+            {balance} tokens
           </b>
         </span>
       </div>
 
       <div className={`request phase-${phase}`}>
         <div className="request-top">
-          <span className="request-id">REQUEST #42</span>
+          <span className="request-id">NEW REQUEST</span>
           <span className="request-status">{status}</span>
         </div>
         <div className="request-lab">CardioGen Research Lab</div>
         <dl className="request-terms">
-          <dt>Purpose</dt>
-          <dd>Heart-disease risk study</dd>
-          <dt>Access</dt>
-          <dd>1 aggregate query · no raw genome</dd>
-          <dt>Offer</dt>
-          <dd>{FEE} GENE · expires in 90 days</dd>
+          <dt>Why</dt>
+          <dd>Heart-disease study</dd>
+          <dt>They get</dt>
+          <dd>One summary answer, never your full DNA</dd>
+          <dt>They pay</dt>
+          <dd>{FEE} tokens · access for 90 days</dd>
         </dl>
         <div className="request-actions">
           {phase === 'pending' && (
@@ -140,7 +140,7 @@ export default function ContractDemo() {
           )}
           {phase === 'active' && (
             <button className="btn btn-danger" onClick={revoke}>
-              <ShieldOff size={16} /> Revoke access
+              <ShieldOff size={16} /> Take back permission
             </button>
           )}
           {(phase === 'revoked' || phase === 'declined') && (
@@ -155,8 +155,8 @@ export default function ContractDemo() {
       </div>
 
       <div className="ledger">
-        <div className="ledger-title">On-chain event log</div>
-        {log.length === 0 && <div className="ledger-empty">Waiting for the owner’s decision…</div>}
+        <div className="ledger-title">Blockchain record · can’t be changed</div>
+        {log.length === 0 && <div className="ledger-empty">Waiting for your decision…</div>}
         <AnimatePresence initial={false}>
           {log.map((e) => (
             <motion.div
@@ -184,7 +184,7 @@ export default function ContractDemo() {
           <motion.div className="warning" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
             <TriangleAlert size={18} />
             <span>
-              Future access is blocked, but <b>results already shared can’t be recalled</b>.
+              No new access, but <b>the lab keeps answers it already got</b>.
             </span>
           </motion.div>
         )}
